@@ -1,8 +1,8 @@
 """Utilities.
 """
-import pandas as pd
 import os
 
+import pandas as pd
 
 DATA_PATH = "./data"
 
