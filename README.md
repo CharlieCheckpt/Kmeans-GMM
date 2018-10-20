@@ -6,6 +6,7 @@ from kmeans import Kmeans
 km = Kmeans(data=data, K=K, tol=tol)
 clusters, centroids = km.train()
 ```
+![alt text](https://raw.githubusercontent.com/CharlieCheckpt/Kmeans-GMM/master/data/gif/kmeans.gif "K-means")
 
 # Gaussian Mixtures Models (GMM) 
 Estimates parameters ![](https://latex.codecogs.com/gif.latex?%5Cmu%2C%20%5CSigma) of a mixture of K gaussian distributions using Expectation-Maximisation algorithm. There are two versions of this algorithm in this repository : 
@@ -19,6 +20,8 @@ from gmm import GaussianMixturesEM
 gm = GaussianMixturesEM(data=data, K=K, tol=tol)
 clusters, mu, sigma = gm.train(kmeans_init=kmeans_init)
 ```
+![alt text](https://raw.githubusercontent.com/CharlieCheckpt/Kmeans-GMM/master/data/gif/gmm.gif "Gaussian Mixtures Model")
+
 
 ##### You can visualize the steps of both algorithm in the notebook `viz.py`.
 
