@@ -8,8 +8,8 @@ clusters, centroids = km.train()
 ```
 
 # Gaussian Mixtures Models (GMM) 
-Estimates parameters $\mu$, $\Sigma$ of a mixture of K gaussian distributions using Expectation-Maximisation algorithm. There are two versions of this algorithm in this repository : 
-* isotropic : assumes covariance matrices are of the form $\Sigma = \sigma^2 I$.
+Estimates parameters ![](https://latex.codecogs.com/gif.latex?%5Cmu%2C%20%5CSigma) of a mixture of K gaussian distributions using Expectation-Maximisation algorithm. There are two versions of this algorithm in this repository : 
+* isotropic : assumes covariance matrices are of the form ![](https://latex.codecogs.com/gif.latex?%5CSigma%20%3D%20%5Csigma%5E2%20I).
 * general : no assumptions on form of covariance matrices.
 
 A good practice for GMM is to initialize parameters and clusters with k-means, but you don't have to. You can specify this option with the boolean argument `kmeans_init`. 
