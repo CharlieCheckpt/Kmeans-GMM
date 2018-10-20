@@ -20,7 +20,7 @@ from gmm import GaussianMixturesEM
 gm = GaussianMixturesEM(data=data, K=K, tol=tol)
 clusters, mu, sigma = gm.train(kmeans_init=kmeans_init)
 ```
-![alt text](https://github.com/CharlieCheckpt/Kmeans-GMM/blob/master/data/gif/gmm.gif?raw=true "Gaussian Mixtures Model")
+![alt text](https://raw.githubusercontent.com/CharlieCheckpt/Kmeans-GMM/master/data/gif/gmm.gif "Gaussian Mixtures Model")
 
 
 ##### You can visualize the steps of both algorithm in the notebook `viz.py`.
