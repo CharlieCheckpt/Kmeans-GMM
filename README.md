@@ -1,4 +1,4 @@
-#K-means
+# K-means
 Clusters data in K groups via K-means algorithm. 
 Find below an example on how to use it : 
 ```python
