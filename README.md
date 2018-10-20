@@ -23,5 +23,5 @@ clusters, mu, sigma = gm.train(kmeans_init=kmeans_init)
 ![alt text](https://raw.githubusercontent.com/CharlieCheckpt/Kmeans-GMM/master/data/gif/gmm.gif "Gaussian Mixtures Model")
 
 
-##### You can visualize the steps of both algorithm in the notebook `viz.py`.
+##### You can visualize the steps of both algorithm in the notebook `viz.ipynb`.
 
