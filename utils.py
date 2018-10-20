@@ -7,7 +7,7 @@ import pandas as pd
 DATA_PATH = "./data"
 
 def load_data(data_file="EMGaussian.data", header=None, delimiter=" "):
-    """Loads data file..
+    """Loads data file.
         data_file (str, optional): Defaults to "EMGaussian.data". Name of data file, must be in "./data".
     
     Returns:

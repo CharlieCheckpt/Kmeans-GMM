@@ -95,7 +95,7 @@ class Kmeans():
         cluster_colors = [colors[c] for c in clusters]
         centroids_colors = colors
 
-        plt.figure(figsize=(15, 8))
+        plt.figure(figsize=(7, 4))
         # plot data with color corresponding to their cluster
         plt.scatter(self.data[:, 0], self.data[:, 1], color=cluster_colors, alpha=0.5)
         # plot centroids with specific marker
@@ -103,7 +103,7 @@ class Kmeans():
                     c=centroids_colors, edgecolors="black", marker=".", s=300)
         # display title
         plt.title(
-            f"Iteration : {iter}, Distortion: {round(distortion, 3)}", fontsize=25)
+            f"Iteration : {iter}, Distortion: {round(distortion, 3)}", fontsize=18)
         display.clear_output(wait=True)
         display.display(plt.gcf())
         time.sleep(0.1)

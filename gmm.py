@@ -95,6 +95,7 @@ class GaussianMixturesEM():
             clusters = np.argmax(tau, axis=0).T  #  (N, )
 
             iter += 1
+        print(f"Algorithm has converged after {iter} iterations")
 
         return clusters, mu, sigma
 
@@ -128,7 +129,7 @@ class GaussianMixturesEM():
         colors = sns.color_palette(None, self.K)
         cluster_colors = [colors[c] for c in clusters]
 
-        plt.figure(figsize=(15, 8))
+        plt.figure(figsize=(7, 4))
         ax = plt.gca()  #  get axes of current figure
 
         # plot data with color corresponding to their cluster
@@ -145,12 +146,12 @@ class GaussianMixturesEM():
                 *eigvecs[:, 0][::-1]))  # ellipse angle
             w, h = 2 * 2 * np.sqrt(eigvals)
             ellipse = Ellipse(xy=mu[k], width=w, height=h,
-                              angle=theta, alpha=0.1, color=colors[k])
+                              angle=theta, alpha=0.4, color=colors[k])
             ax.add_patch(ellipse)
 
         # display title
         plt.title(
-            f"Iteration : {iter}, log_likelihood : {log_lik}", fontsize=25)
+            f"Iteration : {iter}, log_likelihood : {log_lik}", fontsize=18)
         display.clear_output(wait=True)
         #  plt.gcf : get a reference to the current figure
         display.display(plt.gcf())
@@ -184,5 +185,6 @@ class GaussianMixturesEM():
         ll = ll_left + ll_right
         ll = cluster_mask * ll
         ll = ll.sum()  #  scalar
+        ll = round(ll, 3)
 
         return ll
