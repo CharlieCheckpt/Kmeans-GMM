@@ -14,13 +14,13 @@ from scipy.stats import multivariate_normal
 
 from kmeans import Kmeans
 from utils import load_data
+from gmm_iso import GaussianIsoMixturesEM
 
 
-class GaussianMixturesEM():
+class GaussianMixturesEM(GaussianIsoMixturesEM):
     def __init__(self, data: np.array, K: int, tol: float):
-        self.data = data
-        self.K = K  # number of clusters.
-        self.tol = tol  #  tolerance for convergence.
+        super(GaussianMixturesEM, self).__init__(data, K, tol)
+
 
     def train(self, kmeans_init: bool, notebook_viz=False):
         """Estimates parameters of the gaussian distributions.
@@ -50,6 +50,7 @@ class GaussianMixturesEM():
         # pi
         pi = [(clusters == k).sum() for k in range(self.K)]
         pi = np.expand_dims(pi, 1)  #  (K, 1) for broadcasting
+        pi = pi / self.data.shape[0]
         # covariance matrix
         sigma = [np.cov(self.data[clusters == k].T) for k in range(self.K)]
         sigma = np.dstack(sigma).T  #  (K, 2, 2)
@@ -76,7 +77,6 @@ class GaussianMixturesEM():
             tau = pi * tau
             # broadcasting, tau : (K, N)
             tau = tau / tau.sum(axis=0, keepdims=True)
-
             # M-step
             # pi
             pi = tau.mean(axis=1, keepdims=True)
@@ -98,93 +98,3 @@ class GaussianMixturesEM():
         print(f"Algorithm has converged after {iter} iterations")
 
         return clusters, mu, sigma
-
-    def eigsorted(self, cov):
-        """computes eigen values and eigen vectors of covariance matrix in decreasing order.
-        Useful for plotting confidence intervals.
-
-        Args:
-            cov (np.array): covariance matrix.
-
-        Returns:
-            np.array, np.array: eigen values, eigen vectors.
-        """
-
-        vals, vecs = np.linalg.eigh(cov)
-        order = vals.argsort()[::-1]
-        return vals[order], vecs[:, order]
-
-    def plot(self, clusters: np.array, mu: np.array, sigma: np.array, log_lik: float, iter: int):
-        """Plot data, means and covariance matrix of normal distributions.
-
-        Args:
-            clusters (np.array): .
-            mu (np.array): means of normal distributions.
-            sigma (np.array): covariances matrices of normal distributions.
-            log_lik (float): log likelihood.
-            iter (int): iteration.
-        """
-
-        # set colors
-        colors = sns.color_palette(None, self.K)
-        cluster_colors = [colors[c] for c in clusters]
-
-        plt.figure(figsize=(7, 4))
-        ax = plt.gca()  #  get axes of current figure
-
-        # plot data with color corresponding to their cluster
-        plt.scatter(self.data[:, 0], self.data[:, 1],
-                    color=cluster_colors, alpha=0.5)
-        # plot gaussian mean with specific marker
-        plt.scatter(mu[:, 0], mu[:, 1], c=colors,
-                    edgecolors="black", marker=".", s=300)
-
-        # plot ellipses of each gaussian
-        for k in range(self.K):
-            eigvals, eigvecs = self.eigsorted(sigma[k])
-            theta = np.degrees(np.arctan2(
-                *eigvecs[:, 0][::-1]))  # ellipse angle
-            w, h = 2 * 2 * np.sqrt(eigvals)
-            ellipse = Ellipse(xy=mu[k], width=w, height=h,
-                              angle=theta, alpha=0.4, color=colors[k])
-            ax.add_patch(ellipse)
-
-        # display title
-        plt.title(
-            f"Iteration : {iter}, log_likelihood : {log_lik}", fontsize=18)
-        display.clear_output(wait=True)
-        #  plt.gcf : get a reference to the current figure
-        display.display(plt.gcf())
-        time.sleep(0.1)
-
-    def loglik(self, clusters: np.array, mu: np.array, sigma: np.array, pi: np.array):
-        """Computes the complete log likelihood of gaussian mixtures model.
-
-        Args:
-            clusters (np.array): .
-            mu (np.array): means of normal distribution.
-            sigma (np.array): covariance matrices of normal distributions.
-            pi (np.array) : frequency of each distribution.
-
-        Returns:
-            float: Complete log likelihood.
-        """
-        # mask
-        cluster_mask = [clusters == k for k in range(self.K)]
-        cluster_mask = np.array(cluster_mask)  # (K, N)
-
-        # left part
-        ll_left = [np.log(pi[k]) for k in range(self.K)]
-        ll_left = np.expand_dims(ll_left, 1)  #  (K, 1)
-        # right part
-        ll_right = [np.log(multivariate_normal(
-            mean=mu[k], cov=sigma[k]).pdf(self.data)) for k in range(self.K)]
-        ll_right = np.array(ll_right)  #  (K, N)
-
-        # final log likelihood
-        ll = ll_left + ll_right
-        ll = cluster_mask * ll
-        ll = ll.sum()  #  scalar
-        ll = round(ll, 3)
-
-        return ll
