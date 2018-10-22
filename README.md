@@ -15,7 +15,7 @@ Estimates parameters ![](https://latex.codecogs.com/gif.latex?%5Cmu%2C%20%5CSigm
 
 A good practice for GMM is to initialize parameters and clusters with k-means, but you don't have to. You can specify this option with the boolean argument `kmeans_init`. 
 
-## Isotropic GMM
+## Isotropic GMM
 ```python
 from gmm import GaussianMixturesEM
 gm = GaussianIsoMixturesEM(data=data, K=4, tol=0.1)
@@ -23,8 +23,7 @@ _ = gm.train(kmeans_init=True, notebook_viz=True)
 ```
 ![alt text](https://raw.githubusercontent.com/CharlieCheckpt/Kmeans-GMM/master/data/gif/gmm_iso.gif "Gaussian Mixtures Model")
 
-## General GMM
-
+## General GMM
 ```python
 from gmm import GaussianMixturesEM
 gm = GaussianMixturesEM(data=data, K=4, tol=0.1)
